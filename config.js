@@ -1,5 +1,5 @@
 const GRID_SIZE = 10;
 const BORDER_RADIUS = 30;
-const WITDH = 600;
-const HEIGHT = 600;
+const WITDH = 500;
+const HEIGHT = 500;
 var SNAKE_SPEED = 8;

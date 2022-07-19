@@ -1,14 +1,15 @@
 let snake, food, randomFood;
 let prevTime = 0;
-var RandomFoodTime = Math.round(Math.random() * 10000) + 5000;
-var RandomTimeout = Math.round(Math.random() * 10000) + 5000;
+var RandomFoodTime = Math.round(Math.random() * 7000) + 5000;
+var RandomTimeout = Math.round(Math.random() * 7000) + 5000;
 var showrd = 0;
-var countdown = 0;
 
 function setup() {
    frameRate(60);
    createCanvas(WITDH, HEIGHT);
    newGame();
+   timeoutBar = new Count(RandomTimeout, 0);
+   timeoutBar.start();
 }
 function draw() {
    background(0);
@@ -20,8 +21,22 @@ function draw() {
 }
 function stopRD(){
    showrd = 0;
-   RandomFoodTime = Math.round(Math.random() * 10000) + 5000;
-   //randomFood.remove();
+   RandomFoodTime = Math.round(Math.random() * 7000) + 5000;
+
+}
+function updateGameStats(score, level){
+   document.getElementById("scoreText").innerHTML = score;
+
+   switch(level){
+      case 8:  document.getElementById("levelText").innerHTML = "1"; break;
+      case 7:  document.getElementById("levelText").innerHTML = "2"; break;
+      case 6:  document.getElementById("levelText").innerHTML = "3"; break;
+      case 5:  document.getElementById("levelText").innerHTML = "4"; break;
+      case 4:  document.getElementById("levelText").innerHTML = "5"; break;
+      case 3:  document.getElementById("levelText").innerHTML = "6"; break;
+      case 2:  document.getElementById("levelText").innerHTML = "7"; break;
+      case 1:  document.getElementById("levelText").innerHTML = "MAX LEVEL"; break;
+   }
 }
 function drawSnake() {
    SNAKE_SPEED = 8;
@@ -48,30 +63,33 @@ function drawSnake() {
    {
       snake.update();
    }
-   textSize(15);
-   text("Score: " + snake.length, 0, 15);
-   //text("Big food Timeout: " + countdown, 0, 31);
+   
+   updateGameStats(snake.length, SNAKE_SPEED);
    food.show();
+   
    if(showrd == 1){
       randomFood.showRd();
       setTimeout(stopRD, RandomTimeout);
-      //for (var i = 0; i <= RandomTimeout; i--){
-      //      countdown = i;
-      //   }
    }
    snake.show();
 
+
    var currentTime = millis();
    if(currentTime - prevTime >= RandomFoodTime && snake.length != 0){
-      if(RandomFoodTime>= RandomTimeout) {
+      if(RandomFoodTime>=RandomTimeout) {
          randomFood.newFood();
          showrd = 1;
       } else {
-         RandomTimeout = Math.round(Math.random() * 10000) + 5000;
+         while(RandomFoodTime<=RandomTimeout){
+            RandomTimeout = Math.round(Math.random() * 7000) + 5000;
+            if(RandomFoodTime>=RandomTimeout){
+               break;
+            }
+         }
       }
       prevTime = currentTime;
       
-      RandomTimeout = Math.round(Math.random() * 10000) + 5000;
+      RandomTimeout = Math.round(Math.random() * 7000) + 5000;
    }
 
    // Handle when snake eat food
@@ -83,7 +101,26 @@ function drawSnake() {
       showrd = 0;
    }
 }
-
+class Count{
+   constructor(s,w){
+     this.s = s
+     this.w = w
+     this.p = createP('')
+   }
+   start(){
+     if (!this.done) {
+       setInterval(() => this.counter(),this.w)
+     }
+   }
+   counter(){
+     if(this.s < 100){
+       this.s ++
+     }
+   }
+   reset(){
+     this.s = 0
+   }
+ } 
 function newGame() {
    snake = new Snake();
    food = new Food();
@@ -97,6 +134,7 @@ function eatRandomFood(){
    snake.length += 2;
    randomFood.newFood();
 }
+
 function keyPressed() {
    if (keyCode == UP_ARROW && snake.vel.y != 1) {
       snake.vel.y = -1;
