@@ -3,6 +3,21 @@
 <head>
    <meta charset="UTF-8">
    <title>Snake game</title>
+   <style>
+      @font-face {
+         font-family: "ARCADECLASSIC";
+         src: url(./ARCADECLASSIC.TTF) format("truetype");
+      }
+      p {
+         font-family: "ARCADECLASSIC";
+         font-size: larger;
+      }
+      span {
+         font-family: "ARCADECLASSIC";
+         font-size: x-large;
+         color: red;
+      }
+   </style>
 </head>
 <body>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
@@ -11,8 +26,8 @@
    <script src="food.js" charset="utf-8"></script>
    <script src="game.js" charset="utf-8"></script>
    <div id="gameStats">
-      <p>Score: <span id="scoreText">0</span></p>
-      <p>Snake Level: <span id="levelText">0</span></p>
+      <p>Score:  <span id="scoreText">0</span></p>
+      <p>Snake Level:  <span id="levelText">0</span></p>
       
    </div>
 </body>
