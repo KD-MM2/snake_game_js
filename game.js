@@ -1,22 +1,46 @@
 let snake, food, randomFood;
 let prevTime = 0;
+let level_score = 0;
 var RandomFoodTime = Math.round(Math.random() * 7000) + 5000;
 var RandomTimeout = Math.round(Math.random() * 7000) + 5000;
 var showrd = 0;
 
 function setup() {
    frameRate(60);
+   bg = loadImage('./bg.png');
+   myFont = loadFont('./ARCADECLASSIC.TTF');
    createCanvas(WITDH, HEIGHT);
    newGame();
-   timeoutBar = new Count(RandomTimeout, 0);
-   timeoutBar.start();
 }
 function draw() {
-   background(0);
+   background(bg);
    if(!snake.isDead){
       drawSnake();
    } else {
-      newGame()
+      pg = createGraphics(460, 460);
+      pg.background(51);
+      pg.noFill();
+      pg.stroke(255);
+   
+      pg.fill(255, 255, 0);
+      pg.textSize(50);
+      pg.textAlign(CENTER);
+      pg.textFont(myFont);
+      pg.text('Game  Over !!!', 250, 150);
+   
+      pg.textSize(25);
+      pg.textAlign(CENTER);
+      pg.textFont(myFont);
+      pg.fill(255, 0, 0);
+      if(frameCount % 120 < 80){
+         pg.text('Press  Enter  to  play  again !!!', 230, 270);
+      }
+      if (keyCode == ENTER && snake.isDead == 1) {
+         newGame();
+      }
+
+      
+      image(pg, 20, 20);
    }
 }
 function stopRD(){
@@ -25,36 +49,37 @@ function stopRD(){
 
 }
 function updateGameStats(score, level){
-   document.getElementById("scoreText").innerHTML = score;
+   document.getElementById("scoreText").innerHTML = score +"/"+ level_score;
 
+   
    switch(level){
-      case 8:  document.getElementById("levelText").innerHTML = "1"; break;
-      case 7:  document.getElementById("levelText").innerHTML = "2"; break;
-      case 6:  document.getElementById("levelText").innerHTML = "3"; break;
-      case 5:  document.getElementById("levelText").innerHTML = "4"; break;
-      case 4:  document.getElementById("levelText").innerHTML = "5"; break;
-      case 3:  document.getElementById("levelText").innerHTML = "6"; break;
-      case 2:  document.getElementById("levelText").innerHTML = "7"; break;
-      case 1:  document.getElementById("levelText").innerHTML = "MAX LEVEL"; break;
+      case 8:  document.getElementById("levelText").innerHTML = "1"; level_score = 50; break;
+      case 7:  document.getElementById("levelText").innerHTML = "2"; level_score = 100; break;
+      case 6:  document.getElementById("levelText").innerHTML = "3"; level_score = 150; break;
+      case 5:  document.getElementById("levelText").innerHTML = "4"; level_score = 200; break;
+      case 4:  document.getElementById("levelText").innerHTML = "5"; level_score = 250; break;
+      case 3:  document.getElementById("levelText").innerHTML = "6"; level_score = 300; break;
+      case 2:  document.getElementById("levelText").innerHTML = "7"; level_score = 350; break;
+      case 1:  document.getElementById("levelText").innerHTML = "MAX LEVEL"; level_score = "400 MAX"; break;
    }
 }
 function drawSnake() {
    SNAKE_SPEED = 8;
-   if(snake.length <= 50){
+   if(snake.length < 50){
       SNAKE_SPEED = 8;
-   } else if(snake.length <= 100){
+   } else if(snake.length < 100){
       SNAKE_SPEED = 7;
-   } else if(snake.length <= 150){
+   } else if(snake.length < 150){
       SNAKE_SPEED = 6;
-   } else if(snake.length <= 200){
+   } else if(snake.length < 200){
       SNAKE_SPEED = 5;
-   } else if(snake.length <= 250){
+   } else if(snake.length < 250){
       SNAKE_SPEED = 4;
-   } else if(snake.length <= 300){
+   } else if(snake.length < 300){
       SNAKE_SPEED = 3;
-   } else if(snake.length <= 350) {
+   } else if(snake.length < 350) {
       SNAKE_SPEED = 2;
-   } else if(snake.length <= 400){
+   } else if(snake.length < 400){
       SNAKE_SPEED = 1;
    }
 
@@ -88,7 +113,6 @@ function drawSnake() {
          }
       }
       prevTime = currentTime;
-      
       RandomTimeout = Math.round(Math.random() * 7000) + 5000;
    }
 
@@ -125,6 +149,7 @@ function newGame() {
    snake = new Snake();
    food = new Food();
    randomFood = new Food();
+   level_score = 0;
 }
 function eatFood() {
    snake.length++;
