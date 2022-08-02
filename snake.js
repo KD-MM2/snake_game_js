@@ -8,6 +8,7 @@ class Snake {
        this.isDead = false;
     }
 
+    // ヘビが餌を食べた時の処理
     update(){
        this.body.push(createVector(this.head.x, this.head.y));
  
@@ -21,7 +22,8 @@ class Snake {
        {
           this.body.shift();
        }
- 
+
+       // 頭が身体をぶつかると死ぬ
        for(let vector of this.body)
        {
           if(vector.x == this.head.x && vector.y == this.head.y)
@@ -31,13 +33,14 @@ class Snake {
        }
  
     }
+    // ヘビを表示する
     show() {
        noStroke();
-       // Draw snake head
+       // ヘビの頭
        fill(255);
        rect(this.head.x, this.head.y, GRID_SIZE, GRID_SIZE);
  
-       // Draw snake body
+       // ヘビの身体
        fill(155);
        for(let vector of this.body)
        {

@@ -1,8 +1,8 @@
 let snake, food, randomFood;
 let prevTime = 0;
 let level_score = 0;
-var RandomFoodTime = Math.round(Math.random() * 7000) + 5000;
-var RandomTimeout = Math.round(Math.random() * 7000) + 5000;
+var RandomFoodTime = Math.round(Math.random() * 6000) + 5000;
+var RandomTimeout = Math.round(Math.random() * 5000) + 5000;
 var showrd = 0;
 
 function setup() {
@@ -14,6 +14,8 @@ function setup() {
 }
 function draw() {
    background(bg);
+
+   // ゲームオーバーの画面
    if(!snake.isDead){
       drawSnake();
    } else {
@@ -35,23 +37,24 @@ function draw() {
       if(frameCount % 120 < 80){
          pg.text('Press  Enter  to  play  again !!!', 230, 270);
       }
+      // エンターをオスと再スタート
       if (keyCode == ENTER && snake.isDead == 1) {
          newGame();
       }
-
-      
       image(pg, 20, 20);
    }
 }
+
+// ランダム餌を消し
 function stopRD(){
    showrd = 0;
-   RandomFoodTime = Math.round(Math.random() * 7000) + 5000;
-
+   RandomFoodTime = Math.round(Math.random() * 6000) + 5000;
 }
+
+// 点数やレベルなどの表示・更新する
 function updateGameStats(score, level){
    document.getElementById("scoreText").innerHTML = score +"/"+ level_score;
 
-   
    switch(level){
       case 8:  document.getElementById("levelText").innerHTML = "1"; level_score = 50; break;
       case 7:  document.getElementById("levelText").innerHTML = "2"; level_score = 100; break;
@@ -63,7 +66,10 @@ function updateGameStats(score, level){
       case 1:  document.getElementById("levelText").innerHTML = "MAX LEVEL"; level_score = "400 MAX"; break;
    }
 }
+// ヘビを描く
 function drawSnake() {
+
+   // レベルおよび速度の設定
    SNAKE_SPEED = 8;
    if(snake.length < 50){
       SNAKE_SPEED = 8;
@@ -91,14 +97,15 @@ function drawSnake() {
    
    updateGameStats(snake.length, SNAKE_SPEED);
    food.show();
-   
+
+   // ランダム餌を表示
    if(showrd == 1){
       randomFood.showRd();
       setTimeout(stopRD, RandomTimeout);
    }
    snake.show();
 
-
+   // ランダム餌の出現時間とタイムアウト
    var currentTime = millis();
    if(currentTime - prevTime >= RandomFoodTime && snake.length != 0){
       if(RandomFoodTime>=RandomTimeout) {
@@ -106,17 +113,17 @@ function drawSnake() {
          showrd = 1;
       } else {
          while(RandomFoodTime<=RandomTimeout){
-            RandomTimeout = Math.round(Math.random() * 7000) + 5000;
+            RandomTimeout = Math.round(Math.random() * 5000) + 5000;
             if(RandomFoodTime>=RandomTimeout){
                break;
             }
          }
       }
       prevTime = currentTime;
-      RandomTimeout = Math.round(Math.random() * 7000) + 5000;
+      RandomTimeout = Math.round(Math.random() * 5000) + 5000;
    }
 
-   // Handle when snake eat food
+   // ヘビの頭が餌をぶつかると　長さをたす　と　新し餌を表示
    if(snake.head.x == food.x && snake.head.y == food.y){
       eatFood();
    }
@@ -160,6 +167,7 @@ function eatRandomFood(){
    randomFood.newFood();
 }
 
+// 矢印キーのハンドル
 function keyPressed() {
    if (keyCode == UP_ARROW && snake.vel.y != 1) {
       snake.vel.y = -1;

@@ -1,3 +1,4 @@
+// 各初期化変数
 const GRID_SIZE = 10;
 const BORDER_RADIUS = 30;
 const WITDH = 500;
